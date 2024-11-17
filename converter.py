@@ -1,10 +1,10 @@
-from flask import Flask, request, sendfile
-from flaskcors import CORS
+from flask import Flask, request, send_file
+from flask_cors import CORS  # Certifique-se de que flask_cors está instalado
 from gtts import gTTS
 import os
 
-app = Flask(name)
-CORS(app)  # Enables CORS for all routes and methods
+app = Flask(__name__)  # Corrigido o uso de __name__
+CORS(app)  # Habilita CORS para todas as rotas e métodos
 
 @app.route('/synthesize', methods=['POST'])
 def synthesize():
@@ -23,10 +23,10 @@ def synthesize():
         tts.save(filename)
 
         # Envia o arquivo de áudio como resposta
-        return sendfile(filename, mimetype="audio/mpeg")
+        return send_file(filename, mimetype="audio/mpeg")
 
     except Exception as e:
         return {"error": str(e)}, 500
 
-if _name == '__main':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
