@@ -3,21 +3,24 @@ from flask_cors import CORS  # Certifique-se de que flask_cors está instalado
 from gtts import gTTS
 import os
 
-app = Flask(__name__)  # Corrigido o uso de __name__
-CORS(app)  # Habilita CORS para todas as rotas e métodos
+app = Flask(__name__)
+
+# Habilita CORS para todas as rotas e métodos, permitindo acesso de qualquer origem
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
 
 @app.route('/synthesize', methods=['POST'])
 def synthesize():
     try:
-        # Obtém o texto enviado na requisição
+        # Obtém o JSON enviado na requisição
         data = request.json
         text = data.get("text", "")
 
-        # Validação simples
+        # Validação: retorna erro se o texto estiver ausente
         if not text:
             return {"error": "Texto ausente da requisição"}, 400
 
-        # Gera o áudio usando gTTS
+        # Gera o áudio utilizando o gTTS
         tts = gTTS(text=text, lang='pt')
         filename = "audio.mp3"
         tts.save(filename)
