@@ -6,7 +6,8 @@ import os
 app = Flask(__name__)
 
 # Habilita CORS apenas para a origem http://localhost:3001 em todas as rotas
-CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 @app.route('/synthesize', methods=['POST'])
 def synthesize():
